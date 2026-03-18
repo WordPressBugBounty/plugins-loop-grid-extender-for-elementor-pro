@@ -1,0 +1,54 @@
+.lgefep_elementor_review_notice .lgefep_elementor_review_wrapper{
+    padding: 10px; border:
+    2px solid #EDACFB;
+  }
+  .lgefep_elementor_review_notice .lgefep_elementor_offer_notice{
+    position: absolute;
+    top: -11px;
+    left: 16px;
+    background: #EDACFB;
+    color: #0C0D0E;
+    font-size: 10px;
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .lgefep_elementor_review_notice .lgefep_elementor_offer_notice a{
+    color: #0C0D0E;
+  }
+  .lgefep_elementor_review_notice #lgefep_elementor_review_dismiss{
+    position: absolute;
+    bottom: 4px;
+    background: #EDACFB;
+    color: #0C0D0E;
+    font-size: 10px;
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .lgefep_elementor_review_notice .lgefep_elementor_review_msg{
+    font-size: 12px;
+    line-height: 18px;
+  }
+  
+  .lgefep_elementor_review_notice .lgefep_elementor_review_msg a{
+    color: #EDACFB;
+  }
+
+  .lgefep_elementor_demo_btn{
+    position: absolute;
+    bottom: 4px;
+    right: 20px;
+    background: #EDACFB;
+    font-size: 10px;
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .lgefep_elementor_demo_btn a{
+    color: black;
+  }
+  .lgefep_elementor_demo_btn a:hover{
+    color:black;
+    text-decoration: none;
+  }
