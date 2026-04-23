@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Loop Grid Extender for Elementor - ACF Repeater & Smart Filters
  * Description: Use ACF repeater fields inside Elementor loop items and add smart dynamic dropdown taxonomy filters to the Elementor Loop Grid widget.
-* Version: 1.1.7
+* Version: 1.1.8
 * Requires at least: 6.5
  * Requires PHP: 7.4
  * Requires Plugins: elementor
@@ -18,7 +18,7 @@
     exit; // Exit if accessed directly.
 }
 
-!defined('LGEFEP_VERSION') && define('LGEFEP_VERSION', '1.1.7');
+!defined('LGEFEP_VERSION') && define('LGEFEP_VERSION', '1.1.8');
 !defined('LGEFEP_FILE') && define('LGEFEP_FILE', __FILE__);
 !defined('LGEFEP_PLUGIN_DIR') && define('LGEFEP_PLUGIN_DIR', plugin_dir_path(LGEFEP_FILE));
 !defined('LGEFEP_PLUGIN_URL') && define('LGEFEP_PLUGIN_URL', plugin_dir_url(LGEFEP_FILE));

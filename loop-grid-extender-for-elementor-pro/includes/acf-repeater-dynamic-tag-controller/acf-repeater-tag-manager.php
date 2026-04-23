@@ -27,7 +27,7 @@ if (!class_exists('LGEFEP_ACF_REPEATER_TAG_MANAGER')) {
         }
 
         public static function get_tag_classes_names() {
-            $available_tags = ['AcfRepeaterImageTag', 'AcfRepeaterPostTitleTag', 'AcfRepeaterTextTag', 'AcfRepeaterUrlTag', 'AcfRepeaterEmailTag', 'AcfRepeaterNumberTag', 'AcfRepeaterWysiwygTag'];
+            $available_tags = ['AcfRepeaterImageTag', 'AcfRepeaterPostTitleTag', 'AcfRepeaterTextTag', 'AcfRepeaterUrlTag', 'AcfRepeaterEmailTag', 'AcfRepeaterEmailUrlTag', 'AcfRepeaterNumberTag', 'AcfRepeaterWysiwygTag'];
             return $available_tags;
         }
         
