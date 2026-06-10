@@ -41,7 +41,7 @@ if (!class_exists('AcfRepeaterEmailTag')) {
             if ( empty( $field_key ) ) {
                 return '';
             }
-            $value = esc_html($manager->get_repeater_value( $field_key ));
+            $value = sanitize_email( $manager->get_repeater_value( $field_key ) );
             if ( $value === null ) {
                 return '';
             }

@@ -37,7 +37,7 @@ if (!class_exists('AcfRepeaterPostTitleTag')) {
                 return '';
             }
             $post_title = $post->post_title;
-            echo wp_kses_post($post_title);
+            echo esc_html( $post_title );
         }
     }
 }

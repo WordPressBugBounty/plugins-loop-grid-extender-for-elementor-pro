@@ -141,7 +141,7 @@ if(!class_exists('LGEFEP_Taxonomy_Addon_Controls')){
 				$url          = admin_url( 'admin-ajax.php' );
 				$html         = '<div class="lgefep_elementor_review_wrapper">';
 				$html        .= '<div id="lgefep_elementor_review_dismiss" data-url="' . esc_url( $url ) . '" data-nonce="' . esc_attr( $review_nonce ) . '">Close Notice X</div>
-								<div class="lgefep_elementor_review_msg">' . __( 'Hope this addon solved your problem!', 'loop-grid-extender-for-elementor-pro' ) . '<br><a href="https://wordpress.org/support/plugin/loop-grid-extender-for-elementor-pro/reviews/#new-post" target="_blank"">Share the love with a ⭐⭐⭐⭐⭐ rating.</a><br><br></div>
+								<div class="lgefep_elementor_review_msg">' . esc_html__( 'Hope this addon solved your problem!', 'loop-grid-extender-for-elementor-pro' ) . '<br><a href="https://wordpress.org/support/plugin/loop-grid-extender-for-elementor-pro/reviews/#new-post" target="_blank"">Share the love with a ⭐⭐⭐⭐⭐ rating.</a><br><br></div>
 								<div class="lgefep_elementor_demo_btn"><a href="https://wordpress.org/support/plugin/loop-grid-extender-for-elementor-pro/reviews/#new-post" target="_blank">Submit Review</a></div>
 								</div>';
 
@@ -150,7 +150,7 @@ if(!class_exists('LGEFEP_Taxonomy_Addon_Controls')){
 					[
 						'name'            => 'lgefep_pro_image',
 						'type'            =>  \Elementor\Controls_Manager::RAW_HTML,
-						'raw'             => $html,
+						'raw'             => wp_kses_post( $html ),
 						'content_classes' => 'lgefep_elementor_review_notice',
 						'condition'       => [
 							'lgefep_taxonomy_dropdown' => 'yes',
@@ -500,6 +500,10 @@ if(!class_exists('LGEFEP_Taxonomy_Addon_Controls')){
             if ( ! check_ajax_referer( 'lgefep_elementor_review', 'nonce', false ) ) {
                 wp_send_json_error( __( 'Invalid security token sent.', 'loop-grid-extender-for-elementor-pro' ) );
                 wp_die( '0', 400 );
+            }
+
+            if ( ! current_user_can( 'manage_options' ) ) {
+                wp_send_json_error();
             }
     
             if ( isset( $_POST['lgefep_notice_dismiss'] ) && 'true' === sanitize_text_field(wp_unslash($_POST['lgefep_notice_dismiss'])) ) {

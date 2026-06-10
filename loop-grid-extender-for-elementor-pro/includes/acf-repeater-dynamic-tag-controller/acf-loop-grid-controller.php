@@ -15,17 +15,19 @@ class LGEFEP_ACF_LOOP_GRID_CONTROLLER {
         add_filter('elementor/query/query_args', [$this, 'add_acf_repeater_query_args'], 10, 2);
         add_filter('the_posts', [$this, 'lgefep_modify_the_posts'], 10, 2);
         add_action('elementor/editor/before_enqueue_styles', [$this, 'editor_assets']);
-        add_action( 'wp_ajax_lgefep_elementor_review_notice', array( $this, 'lgefep_elementor_review_notice' ) );
     }
 
     public function add_acf_repeater_query_args( $query_args, $widget ) {
         $settings = $widget->get_settings();
         if ( isset( $settings['lgefep_acf_repeater_tag'] ) && $settings['lgefep_acf_repeater_tag'] === 'yes' ) {
-            $query_args['lgefep_virtual_posts'] = 1;
-            $query_args['lgefep_acf_repeater_field'] = esc_attr($settings['lgefep_acf_repeater_field']);
-            $query_args['lgefep_acf_repeater_current_post_only'] = esc_attr($settings['lgefep_acf_repeater_current_post_only']);
-            if ( $settings['lgefep_acf_repeater_current_post_only'] === 'yes' ) {
-                $query_args['post__in'] = [get_the_ID()];
+            $allowed = array_keys( $this->get_acf_repeater_fields() );
+            if ( isset( $settings['lgefep_acf_repeater_field'] ) && in_array( $settings['lgefep_acf_repeater_field'], $allowed, true ) ) {
+                $query_args['lgefep_virtual_posts'] = 1;
+                $query_args['lgefep_acf_repeater_field'] = esc_attr($settings['lgefep_acf_repeater_field']);
+                $query_args['lgefep_acf_repeater_current_post_only'] = esc_attr($settings['lgefep_acf_repeater_current_post_only']);
+                if ( $settings['lgefep_acf_repeater_current_post_only'] === 'yes' ) {
+                    $query_args['post__in'] = [get_the_ID()];
+                }
             }
         }
         return $query_args;
@@ -59,7 +61,7 @@ class LGEFEP_ACF_LOOP_GRID_CONTROLLER {
                 $virtual_posts[] = $virtual_post;
             }
         }
-        // var_dump($virtual_posts);
+       
         return $virtual_posts;
     }
 
@@ -108,7 +110,7 @@ class LGEFEP_ACF_LOOP_GRID_CONTROLLER {
             $url          = admin_url( 'admin-ajax.php' );
             $html         = '<div class="lgefep_elementor_review_wrapper">';
             $html        .= '<div id="lgefep_elementor_review_dismiss" data-url="' . esc_url( $url ) . '" data-nonce="' . esc_attr( $review_nonce ) . '">Close Notice X</div>
-                            <div class="lgefep_elementor_review_msg">' . __( 'Hope this addon solved your problem!', 'loop-grid-extender-for-elementor-pro' ) . '<br><a href="https://wordpress.org/support/plugin/loop-grid-extender-for-elementor-pro/reviews/#new-post" target="_blank"">Share the love with a ⭐⭐⭐⭐⭐ rating.</a><br><br></div>
+                            <div class="lgefep_elementor_review_msg">' . esc_html__( 'Hope this addon solved your problem!', 'loop-grid-extender-for-elementor-pro' ) . '<br><a href="https://wordpress.org/support/plugin/loop-grid-extender-for-elementor-pro/reviews/#new-post" target="_blank"">Share the love with a ⭐⭐⭐⭐⭐ rating.</a><br><br></div>
                             <div class="lgefep_elementor_demo_btn"><a href="https://wordpress.org/support/plugin/loop-grid-extender-for-elementor-pro/reviews/#new-post" target="_blank">Submit Review</a></div>
                             </div>';
 
@@ -117,7 +119,7 @@ class LGEFEP_ACF_LOOP_GRID_CONTROLLER {
                 [
                     'name'            => 'lgefep_pro_image',
                     'type'            =>  \Elementor\Controls_Manager::RAW_HTML,
-                    'raw'             => $html,
+                    'raw'             => wp_kses_post( $html ),
                     'content_classes' => 'lgefep_elementor_review_notice',
                     'condition'       => [
                         'lgefep_acf_repeater_tag' => 'yes',
@@ -125,18 +127,6 @@ class LGEFEP_ACF_LOOP_GRID_CONTROLLER {
                 ]
             );
         }
-    }
-
-    public function lgefep_elementor_review_notice() {
-        if ( ! check_ajax_referer( 'lgefep_elementor_review', 'nonce', false ) ) {
-            wp_send_json_error( __( 'Invalid security token sent.', 'loop-grid-extender-for-elementor-pro' ) );
-            wp_die( '0', 400 );
-        }
-
-        if ( isset( $_POST['lgefep_notice_dismiss'] ) && 'true' === sanitize_text_field(wp_unslash($_POST['lgefep_notice_dismiss'])) ) {
-            update_option( 'lgefep_review_notice_dismiss', 'yes' );
-        }
-        exit;
     }
 
     public function get_acf_repeater_fields() {

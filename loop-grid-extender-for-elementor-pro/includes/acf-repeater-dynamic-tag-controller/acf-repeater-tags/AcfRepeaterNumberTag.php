@@ -41,7 +41,7 @@ if (!class_exists('AcfRepeaterNumberTag')) {
             if ( empty( $field_key ) ) {
                 return '';
             }
-            $value = esc_html($manager->get_repeater_value( $field_key ));
+            $value = $manager->get_repeater_value( $field_key );
             if ( $value === null ) {
                 return '';
             }

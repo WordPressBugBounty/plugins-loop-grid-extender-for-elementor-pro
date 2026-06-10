@@ -300,7 +300,7 @@ if(!class_exists('LGEFEP_ADDON_RENDER')){
                     return '
                     <span class="lgefep-data-container" 
                           style="display: none;" 
-                          data-lgefep-config="' . esc_attr(json_encode($frontend_data)) . '"
+                          data-lgefep-config="' . esc_attr( wp_json_encode( $frontend_data ) ) . '"
                           data-widget-id="' . esc_attr($this->widget_data->get_id()) . '">
                     </span>' . $original_content;
                 }
