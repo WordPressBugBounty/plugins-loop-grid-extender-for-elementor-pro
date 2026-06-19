@@ -4,7 +4,7 @@ Tags: loop grid, taxonomy filter, dropdown filter, Elementor, ACF repeater field
 Requires at least: 6.5  
 Tested up to: 7.0
 Requires PHP: 7.4  
-Stable tag: 1.1.9
+Stable tag: 1.2.0
 License: GPLv2 or later  
 License URI: https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -133,6 +133,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 3. ACF Repeater Field Setup/configuration preview 
 
 ==  Changelog == 
+
+= Version 1.2.0 | 19/06/2026 =
+* **Added:** ACF date and date time field Support.
 
 = Version 1.1.9 | 10/06/2026 =
 * **Improved:** Code Improvements.
