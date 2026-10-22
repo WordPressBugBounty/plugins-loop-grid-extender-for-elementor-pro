@@ -11,6 +11,7 @@ use Elementor\Controls_Manager;
 class LGEFEP_ACF_LOOP_GRID_CONTROLLER {
 
     public function __construct() {
+        add_filter('get_post_metadata', [$this, 'lgefep_filter_virtual_post_meta'], 10, 4);
         add_action('elementor/element/loop-grid/section_query/before_section_end', [$this, 'add_acf_repeater_query_controls']);
         add_filter('elementor/query/query_args', [$this, 'add_acf_repeater_query_args'], 10, 2);
         add_filter('the_posts', [$this, 'lgefep_modify_the_posts'], 10, 2);
@@ -63,6 +64,26 @@ class LGEFEP_ACF_LOOP_GRID_CONTROLLER {
         }
        
         return $virtual_posts;
+    }
+
+    /**
+     * Resolve post meta reads for virtual repeater posts from the current row,
+     * so Elementor Pro display conditions (metadata_exists / get_post_meta) can see sub-field values.
+     */
+    public function lgefep_filter_virtual_post_meta( $value, $object_id, $meta_key, $single ) {
+        if ( empty( $meta_key ) || ! class_exists( 'ACF' ) ) {
+            return $value;
+        }
+        $current_post = get_post();
+        if ( ! $current_post || (int) $current_post->ID >= 0 || abs( (int) $current_post->ID ) !== abs( (int) $object_id ) ) {
+            return $value;
+        }
+        $row = isset( $current_post->acf_repeater_data ) ? $current_post->acf_repeater_data : null;
+        if ( ! is_array( $row ) || ! array_key_exists( $meta_key, $row ) ) {
+            return $value;
+        }
+        $meta_value = \LGEFEP\Includes\ACF_REPEATER_DYNAMIC_TAG\LGEFEP_ACF_REPEATER_TAG_MANAGER::lgefep_normalize_value( $row[ $meta_key ] );
+        return [ $meta_value ];
     }
 
     public function add_acf_repeater_query_controls($element) {

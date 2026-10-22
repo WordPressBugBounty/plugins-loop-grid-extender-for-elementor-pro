@@ -3,9 +3,9 @@ jQuery(document).ready(function ($) {
         var $this = $(this);
         var wrapper = $this.parents('.cool-feedback-notice-wrapper');
         var ajaxURL = wrapper.data('ajax-url');
-        console.log(wrapper);
+
         var ajaxCallback = wrapper.data('ajaxCallback');
-        console.log(ajaxCallback);
+
         var ajaxNonce = wrapper.data("nonce");
         $.post(ajaxURL, {
             'action': ajaxCallback,

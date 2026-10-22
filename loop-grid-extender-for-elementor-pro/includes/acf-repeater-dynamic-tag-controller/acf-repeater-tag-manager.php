@@ -30,6 +30,45 @@ if (!class_exists('LGEFEP_ACF_REPEATER_TAG_MANAGER')) {
             $available_tags = ['AcfRepeaterImageTag','AcfRepeaterDateTag', 'AcfRepeaterPostTitleTag', 'AcfRepeaterTextTag', 'AcfRepeaterUrlTag', 'AcfRepeaterEmailTag', 'AcfRepeaterEmailUrlTag', 'AcfRepeaterNumberTag', 'AcfRepeaterWysiwygTag'];
             return $available_tags;
         }
+
+        /**
+         * Convert a raw ACF repeater sub-field value into a plain string.
+         * Lists (checkbox, multi-select, relationship, gallery, taxonomy) become a comma-separated list
+         * of IDs or values; posts, terms and images use their ID; link fields use their URL.
+         *
+         * @param mixed $raw Raw sub-field value.
+         * @return string
+         */
+        public static function lgefep_normalize_value( $raw ) {
+            if ( is_string( $raw ) ) {
+                return $raw;
+            }
+            if ( is_int( $raw ) || is_float( $raw ) ) {
+                return (string) $raw;
+            }
+            if ( is_bool( $raw ) ) {
+                return $raw ? '1' : '';
+            }
+            if ( is_object( $raw ) ) {
+                $raw = get_object_vars( $raw );
+            }
+            if ( ! is_array( $raw ) || empty( $raw ) ) {
+                return '';
+            }
+            if ( array_keys( $raw ) === range( 0, count( $raw ) - 1 ) ) {
+                $items = array_map( [ __CLASS__, 'lgefep_normalize_value' ], $raw );
+                $items = array_filter( $items, 'strlen' );
+                return implode( ', ', $items );
+            }
+            foreach ( [ 'ID', 'id', 'term_id', 'value', 'url' ] as $key ) {
+                if ( isset( $raw[ $key ] ) && is_scalar( $raw[ $key ] ) ) {
+                    return self::lgefep_normalize_value( $raw[ $key ] );
+                }
+            }
+            // Group fields and nested repeater rows: join their sub-field values.
+            $items = array_map( [ __CLASS__, 'lgefep_normalize_value' ], array_values( $raw ) );
+            return implode( ', ', array_filter( $items, 'strlen' ) );
+        }
         
         public function get_repeater_value($sub_field_key) {
             $sub_field_key = esc_attr($sub_field_key);
