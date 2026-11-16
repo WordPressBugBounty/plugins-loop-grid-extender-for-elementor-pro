@@ -19,10 +19,15 @@ if (!class_exists('AcfRepeaterImageTag')) {
             return 'acf';
         }
 
+		/**
+		 * Image controls only: this tag returns an image array (id and url).
+		 * Link (URL) controls use AcfRepeaterImageUrlTag, listed there with the same title.
+		 *
+		 * @return string[]
+		 */
         public function get_categories() {
             return [
                 \Elementor\Modules\DynamicTags\Module::IMAGE_CATEGORY,
-                \Elementor\Modules\DynamicTags\Module::URL_CATEGORY,
             ];
         }
 
